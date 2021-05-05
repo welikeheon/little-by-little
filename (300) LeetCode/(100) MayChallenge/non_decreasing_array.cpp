@@ -12,11 +12,11 @@ public:
         if(nums[i] > nums[i+1]) {
           if(++cnt > 1) return false; // when modify happens more than once
 
-          // to determine which element should be change
+          // to determine which element should be changed
           if(i+2 < nums.size() && nums[i] > nums[i+2]) nums[i] = nums[i+1];
           else nums[i+1] = nums[i];
 
-          i = -1;    // start over again
+          i = -1;    // start over again to look up more decreasing point
         }
       }
       return true;
