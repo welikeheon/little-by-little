@@ -2,36 +2,39 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <utility>
 
 using namespace std;
 
 int solution(vector<int> priorities, int location) {
     int answer = 0;
-    vector<int> priorities_index; // the original location of the queuee
-    vector<int> ordered_priorities; // the ordered queue
+    int target = 0;
+    vector<pair<int, int> > priorities_pair;    // pair with (priority, index)
 
+    // make the new priorities vector with pair
     for (int i=0; i<priorities.size(); i++) {
-        priorities_index.push_back(i);  // match the initial location
+        priorities_pair.push_back(make_pair(priorities[i], i));
     }
 
-    while (priorities.size() >= 1) {  // O(n^2)
-        // if the first element of the queue should be located at last,
-        if (priorities[0] != *max_element(priorities.begin(), priorities.end())) {
-            priorities.push_back(priorities[0]);  // move the element
-            priorities.erase(priorities.begin());
-            priorities_index.push_back(priorities_index[0]);  // move index too
-            priorities_index.erase(priorities_index.begin());
-        }
-        else {  // if the first element has the highest priority and should be printed,
-            ordered_priorities.push_back(priorities_index[0]);  // add to the ordered queue
+    // sort the priorities (descending order)
+    sort(priorities.begin(), priorities.end(), [](const auto& x, const auto& y) {return x > y;} );
 
-            // dequeue the first one as no need to consider anymore
+    while (priorities.size()) {
+        if (priorities_pair[target].first == priorities[0]) {   // if the target has the biggest priority
             priorities.erase(priorities.begin());
-            priorities_index.erase(priorities_index.begin());
+            target++;   // aim for the next target (this leads resizing the queue)
+        }
+        else {    // if not,
+            // copy the target and paste it to the end
+            priorities_pair.push_back(make_pair(priorities_pair[target].first,
+                                                priorities_pair[target].second));
+            // dequeue the target
+            priorities_pair.erase(priorities_pair.begin()+target);
         }
     }
 
-    while (ordered_priorities[answer] != location) answer++;
+    // find the answer with the location
+    while (priorities_pair[answer].second != location) answer++;
 
     return answer+1;
 
