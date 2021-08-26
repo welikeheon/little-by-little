@@ -8,7 +8,7 @@ using namespace std;
 int solution(int bridge_length, int weight, vector<int> truck_weights) {
     int answer = 0;
     int cur_weight = 0;
-    vector<pair<int, int> > bridge_queue;  // pair has <truck_weight, loc>
+    vector<pair<int, int> > bridge_queue;  // pair has <truck_weight, process time>
 
     do {
         if (bridge_queue.size()) {  // if there are some trucks crossing,
