@@ -18,8 +18,8 @@ def is_prime(n):
 def solution(n, k):
     answer = 0
     Knary = str(to_K_nary(n, k))
-    Knary_size = len(Knary)
 
+    # split by '0'
     splitted = Knary.split('0')
     for s in splitted:
         if s and is_prime(int(s)):
